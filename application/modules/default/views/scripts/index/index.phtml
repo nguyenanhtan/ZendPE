@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<style>
+canvas {
+    border:1px solid #d3d3d3;
+    background-color: #f1f1f1;
+}
+</style>
+</head>
+<body onload="startGame()">
+<script>
+
+var myGamePiece;
+var isPlay = 0;
+var listColor = ["#00ED67","#BC8700","#9875DF"];
+var count = 0;
+function startGame() {
+    myGamePiece = new component(300, 700, 400);
+    myGameArea.start();
+}
+
+var myGameArea = {
+    canvas : null,//.getElementsByClassName("canvas")[0],
+    start : function() {
+        this.canvas = document.getElementById("wheel")
+        this.canvas.width = 700;
+        this.canvas.height = 400;
+        this.context = this.canvas.getContext("2d");
+        //document.getElementById("game-area").insertBefore(this.canvas, document.getElementById("game-area").childNodes[1]);
+        this.frameNo = 0;
+        this.interval = setInterval(updateGameArea, 20);
+        isPlay = 1;
+        count = 0;
+    },
+    stop : function() {
+        clearInterval(this.interval);
+        isPlay = 0;
+        count = 0;
+    },    
+    clear : function() {
+        this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    }
+}
+function play(){
+    if(isPlay != 1){
+        count = 0;
+        myGameArea.interval = setInterval(updateGameArea, 20);
+        isPlay = 1;
+    }
+}
+function pause(){
+    clearInterval(myGameArea.interval);
+    isPlay = 0;
+}
+function piece(tex, r, color, startP, wArc,x,y){//wArc: So do goc cung tron
+    ctx = myGameArea.context;
+    ctx.save();
+    //ctx.translate(x,y);
+    ctx.rotate(startP*Math.PI/180);
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.arc(0,0,r,-wArc*Math.PI/360,wArc*Math.PI/360);
+    ctx.closePath();
+    ctx.fill();
+    ctx.textAlign = "right";
+    ctx.strokeText(tex,r - 10,0);
+    ctx.restore();
+}
+function component(r, x, y) {
+    this.angle = 0;
+    this.x = x;
+    this.y = y;    
+    this.update = function() {
+        ctx = myGameArea.context;
+        ctx.save();
+        ctx.translate(this.x, this.y);        
+        ctx.rotate(this.angle);
+        witArc = 360/20;
+        for(i=0;i<20;i++){
+            piece("Hello "+i,r,listColor[i%3],i*witArc,witArc,this.x,this.y);
+        }
+        ctx.beginPath();
+        ctx.arc(0,0,50,0,2*Math.PI);
+        ctx.fillStyle = "red";
+        ctx.fill();
+        //piece("Hello",150,"#000AD0",0,20,this.x,this.y);
+        //piece("MOrning",150,"#0098D0",20,20,this.x,this.y);
+        ctx.restore();
+         
+    }
+}
+
+function updateGameArea() {
+    count++;
+    delta = 5 - 0.00051*count*count ;
+     
+    if(delta > 0){
+        myGameArea.clear();
+        myGamePiece.angle += delta* Math.PI / 180;   
+        myGamePiece.update();
+    }else{
+        pause();
+    }
+}
+
+</script>
+<div id="game-area">
+    <div>Welcome to Irregular Game</div>
+    <canvas id="wheel"></canvas>
+    <div>
+        <button onclick="pause()">Stop</button>
+        <button onclick="play()">RUN</button>
+    </div>
+</div>
+<p>The red square will rotate one degree every time the gamearea updates (50 times per second).</p>
+
+<p>Note: The angle property must be a radian. You can convert degrees into radians by using the formula x * Math.PI / 180</p>
+</body>
+</html>

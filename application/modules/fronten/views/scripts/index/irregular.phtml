@@ -1,0 +1,42 @@
+<div class="container">
+    <div class="page-header">
+      <h1>Bảng động từ bất quy tắc</h1>
+    </div>
+<div class="input-group">
+  <span class="input-group-addon" id="basic-addon1">@</span>
+  <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon1">
+</div>
+    <div class="line"></div>
+<table class="table table-condensed">
+    <tr class="active">
+        <th>Index</th>
+        <th>Simple</th>
+        <th>Past Simple</th>
+        <th>Past Participle</th>
+        <th>Meaning</th>
+        
+    </tr>
+</table>
+<table class="table table-condensed">
+    <tr class="active">
+        <th>Index</th>
+        <th>Simple</th>
+        <th>Past Simple</th>
+        <th>Past Participle</th>
+        <th>Meaning</th>
+        
+    </tr>
+<?php
+    //echo phpinfo();
+    $i = 1;
+    foreach($this->listIr as $item)
+   echo '<tr>
+      <td class="active">'.$i++.'</td>
+      <td class="success">'.$item['simple'].'</td>
+      <td class="warning">'.$item['simple_past'].'</td>
+      <td class="danger">'.$item['past_participle'].'</td>
+      <td class="info">'.$item['meaning'].'</td>
+    </tr>';
+?>
+</table>
+</div>
